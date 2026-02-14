@@ -3,7 +3,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { LoginValidate } from "@/lib/FormValidator/Login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button, TextField } from "@mui/material";
+import { Alert, Button, Snackbar, TextField } from "@mui/material";
 import useLogin from "@/lib/httpCall/Authentication";
 
 type ILoginForm = yup.InferType<typeof LoginValidate>;
@@ -20,18 +20,46 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  const { isPending, mutate } = useLogin();
+  const { isPending, mutate, isSuccess, isError, error } = useLogin();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     try {
       mutate(data);
     } catch (error) {
-      console.log(error);
+      console.log("error");
     }
   };
 
   return (
     <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>
+      <Snackbar
+        open={isSuccess}
+        autoHideDuration={1000}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          Login Berhasil!
+        </Alert>
+      </Snackbar>
+      {error && (
+        <Snackbar
+          open={isError}
+          autoHideDuration={1000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+            {error.status === 401
+              ? "Username atau password salah!"
+              : error.statusText}
+          </Alert>
+        </Snackbar>
+      )}
       <div className="mb-5">
         <Controller
           name="username"
@@ -42,9 +70,10 @@ export const LoginForm = () => {
               id="username"
               label="Username"
               type="text"
-              size="small"
+              size="medium"
               error={errors.username && true}
               helperText={errors.username?.message}
+              variant="filled"
             />
           )}
         />
@@ -57,21 +86,24 @@ export const LoginForm = () => {
             <TextField
               {...field}
               id="password"
-              label="Required"
+              label="Password"
               type="password"
-              size="small"
+              size="medium"
               error={errors.password && true}
               helperText={errors.password?.message}
+              variant="filled"
             />
           )}
         />
       </div>
       <Button
-        size="small"
-        variant="contained"
+        size="medium"
+        variant="outlined"
         type="submit"
         loading={isPending}
-        loadingPosition="end"
+        loadingPosition="center"
+        color="primary"
+        className="w-full md:w-fit"
       >
         Login
       </Button>

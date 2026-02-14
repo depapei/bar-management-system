@@ -1,3 +1,4 @@
 export const URL = {
-  LOGIN: "/auth/login",
+  LOGIN: "/authentication",
+  REGISTER: "/register",
 };
