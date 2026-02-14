@@ -193,8 +193,10 @@ export const RegisterForm = () => {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                 >
-                  {options.map((opt) => (
-                    <MenuItem value={opt}>{opt}</MenuItem>
+                  {options.map((opt, key: React.Key) => (
+                    <MenuItem key={key} value={opt}>
+                      {opt}
+                    </MenuItem>
                   ))}
                 </Select>
                 {errors.role && (
