@@ -1,11 +1,16 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+"use client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API from "./Instance";
 import { URL } from "./url";
 
 const useAddProduct = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload) => {
       return API.post(URL.MENU, payload);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ProductList"] });
     },
   });
 };

@@ -16,7 +16,7 @@ const AddNewMenu = async (data: any) => {
 
 export const GetAllMenu = async () => {
   try {
-    const allMenu = prismaInstance.masterProduk.findMany({});
+    const allMenu = prismaInstance.masterProduk.findMany();
     return allMenu;
   } catch (error) {
     return null;
