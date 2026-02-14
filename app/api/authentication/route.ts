@@ -1,25 +1,35 @@
+import { Login } from "@/lib/DataAccess/user";
 import { deobfuscateId, obfuscateId } from "@/lib/helper/idObfuscator";
-import { Success, Unauthorized } from "@/lib/helper/responses";
+import {
+  BadRequest,
+  Conflict,
+  Forbidden,
+  Success,
+  Unauthorized,
+} from "@/lib/helper/responses";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
 
   const deobfuscated = {
-    username: deobfuscateId(body.username).id,
-    password: deobfuscateId(body.password).id,
+    username: deobfuscateId(body.username),
+    password: deobfuscateId(body.password),
   };
   const { username, password } = deobfuscated;
 
-  if (username !== "gadjahcakti") {
-    return Unauthorized("Username tidak ditemukan");
-  } else if (password !== "dings123") {
-    return Unauthorized("Password salah");
-  } else if (!username && !password) {
-    return Unauthorized("Username dan password tidak boleh kosong!");
-  }
+  if (username.id && password.id) {
+    const isLogin = await Login({
+      username: username.id,
+      password: password.id,
+    });
 
-  return Success({
-    token: obfuscateId("berhasil-coyyy!!!"),
-  });
+    if (isLogin) {
+      return Success({
+        token: obfuscateId("berhasil-coyyy!!!"),
+      });
+    }
+
+    return Unauthorized("Username atau password masih salah!");
+  }
 };

@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { Alert, Button, Snackbar, TextField } from "@mui/material";
 import useLogin from "@/lib/httpCall/Authentication";
 
-type ILoginForm = yup.InferType<typeof LoginValidate>;
+export type ILoginForm = yup.InferType<typeof LoginValidate>;
 
 export const LoginForm = () => {
   const {

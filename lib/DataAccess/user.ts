@@ -1,8 +1,8 @@
+import { ILoginForm } from "@/components/Form/LoginForm";
+import bcrypt from "bcrypt";
 import { deobfuscateId } from "../helper/idObfuscator";
-import { BadRequest, Success } from "../helper/responses";
 import { IRegister } from "../httpCall/Authentication";
 import prismaInstance from "./prismaClient";
-import bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
@@ -49,5 +49,30 @@ export const RegisterUser = async (data: IRegister) => {
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const Login = async (data: ILoginForm) => {
+  try {
+    const user = await prismaInstance.user.findUnique({
+      where: {
+        Username: data.username,
+      },
+      select: {
+        UserID: true,
+        PasswordHash: true,
+      },
+    });
+
+    if (
+      user?.PasswordHash &&
+      (await bcrypt.compare(data.password, user?.PasswordHash))
+    ) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
   }
 };
