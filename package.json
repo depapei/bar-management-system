@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "clear && next dev --turbopack",
-    "build": "clear && next build --turbopack",
-    "start": "clear && next start",
-    "lint": "clear && eslint"
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

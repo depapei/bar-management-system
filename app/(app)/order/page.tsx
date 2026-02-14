@@ -1,15 +1,15 @@
 import React from "react";
 
-const DashboardPage = () => {
+const OrderPage = () => {
   return (
     <React.Fragment>
-      <div>Dashboard</div>
+      <div>Order</div>
       <div className="flex flex-col gap-8">
-        <div className="border border-red-600">Order yang belum bayar</div>
+        <div className="border border-red-600">Order Terbaru</div>
         <div className="border border-red-600">Tambah data baru</div>
       </div>
     </React.Fragment>
   );
 };
 
-export default DashboardPage;
+export default OrderPage;

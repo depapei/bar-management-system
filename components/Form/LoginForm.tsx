@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Alert, Button, Snackbar, TextField } from "@mui/material";
 import useLogin from "@/lib/httpCall/Authentication";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export type ILoginForm = yup.InferType<typeof LoginValidate>;
 
@@ -21,6 +23,7 @@ export const LoginForm = () => {
     },
   });
   const { isPending, mutate, isSuccess, isError, error } = useLogin();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     try {
@@ -29,6 +32,12 @@ export const LoginForm = () => {
       console.log("error");
     }
   };
+
+  useEffect(() => {
+    if (isSuccess === true) {
+      router.push("/dashboard");
+    }
+  }, [isSuccess]);
 
   return (
     <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>

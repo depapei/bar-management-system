@@ -1,9 +1,8 @@
 "use client";
 
 import Navbar from "@/components/Nav";
-import { useState } from "react";
 
-export const AuthLayout = ({
+export const AppLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -16,4 +15,4 @@ export const AuthLayout = ({
   );
 };
 
-export default AuthLayout;
+export default AppLayout;

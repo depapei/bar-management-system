@@ -1,15 +1,19 @@
+"use client";
 import {
   BottomNavigation,
   BottomNavigationAction,
   Button,
 } from "@mui/material";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import HomeIcon from "@mui/icons-material/Home";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const [value, setValue] = useState(0);
+  const router = useRouter();
 
   return (
     <div>
@@ -21,9 +25,27 @@ export const Navbar = () => {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+          <BottomNavigationAction
+            label="Home"
+            icon={<HomeIcon />}
+            onClick={() => {
+              router.push("/dashboard");
+            }}
+          />
+          <BottomNavigationAction
+            label="Order"
+            icon={<BorderColorIcon />}
+            onClick={() => {
+              router.push("/order");
+            }}
+          />
+          <BottomNavigationAction
+            label="Menu"
+            icon={<RestaurantMenuIcon />}
+            onClick={() => {
+              router.push("/menu");
+            }}
+          />
         </BottomNavigation>
       </div>
       <div className="hidden md:block"></div>
