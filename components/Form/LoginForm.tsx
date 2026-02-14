@@ -4,6 +4,7 @@ import { LoginValidate } from "@/lib/FormValidator/Login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, TextField } from "@mui/material";
+import useLogin from "@/lib/httpCall/Authentication";
 
 type ILoginForm = yup.InferType<typeof LoginValidate>;
 
@@ -19,9 +20,14 @@ export const LoginForm = () => {
       password: "",
     },
   });
+  const { isPending, mutate } = useLogin();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    console.log(data);
+    try {
+      mutate(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -54,7 +60,6 @@ export const LoginForm = () => {
               label="Required"
               type="password"
               size="small"
-              className="w-full md:w-fit"
               error={errors.password && true}
               helperText={errors.password?.message}
             />
@@ -64,8 +69,9 @@ export const LoginForm = () => {
       <Button
         size="small"
         variant="contained"
-        className="w-full md:w-fit"
         type="submit"
+        loading={isPending}
+        loadingPosition="end"
       >
         Login
       </Button>
