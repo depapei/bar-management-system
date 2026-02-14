@@ -3,21 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "clear && next dev --turbopack",
+    "build": "clear && next build --turbopack",
+    "start": "clear && next start",
+    "lint": "clear && eslint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.2.2",
     "@mui/material": "^7.3.8",
+    "axios": "^1.13.5",
     "framer-motion": "^12.34.0",
     "next": "15.5.12",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.71.1",
+    "tanstack-query": "^1.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {

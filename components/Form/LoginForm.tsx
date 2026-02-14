@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { LoginValidate } from "@/lib/FormValidator/Login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Button, TextField } from "@mui/material";
 
 type ILoginForm = yup.InferType<typeof LoginValidate>;
 
@@ -26,53 +27,48 @@ export const LoginForm = () => {
   return (
     <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-5">
-        <label className="block mb-2.5 text-sm font-medium text-heading">
-          Username
-        </label>
         <Controller
           name="username"
           control={control}
           render={({ field }) => (
-            <input
+            <TextField
               {...field}
+              id="username"
+              label="Username"
               type="text"
-              className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-              placeholder="ex: akidna1997"
+              size="small"
+              error={errors.username && true}
+              helperText={errors.username?.message}
             />
           )}
         />
-        <p className="text-red-600 animate-pulse text-sm">
-          {errors.username?.message}
-        </p>
       </div>
       <div className="mb-5">
-        <label className="block mb-2.5 text-sm font-medium text-heading">
-          Your password
-        </label>
         <Controller
           name="password"
           control={control}
           render={({ field }) => (
-            <input
-              type="password"
+            <TextField
+              {...field}
               id="password"
-              onChange={(e: any) => {
-                field.onChange(e.target.value);
-              }}
-              className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-              placeholder="***"
+              label="Required"
+              type="password"
+              size="small"
+              className="w-full md:w-fit"
+              error={errors.password && true}
+              helperText={errors.password?.message}
             />
           )}
         />
-        <p className="text-red-600 animate-pulse text-sm">
-          {errors.password?.message}
-        </p>
       </div>
-      <input
+      <Button
+        size="small"
+        variant="contained"
+        className="w-full md:w-fit"
         type="submit"
-        title="Login"
-        className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none hover:cursor-pointer"
-      />
+      >
+        Login
+      </Button>
     </form>
   );
 };
