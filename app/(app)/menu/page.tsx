@@ -1,3 +1,6 @@
+"use client";
+import ProductForm from "@/components/Form/ProdukForm";
+import { ProductTable } from "@/components/Table/ProductTable";
 import React from "react";
 
 const MenuPage = () => {
@@ -5,9 +8,13 @@ const MenuPage = () => {
     <React.Fragment>
       <div>List Menu</div>
       <div className="flex flex-col gap-8">
-        <div className="border border-red-600">Menu favorit</div>
-        <div className="border border-red-600">List Category </div>
-        <div className="border border-red-600">Tambah data baru</div>
+        <div className="p-8">Menu favorit</div>
+        <div className="p-8">
+          <ProductTable />
+        </div>
+        <div className="p-8">
+          <ProductForm />
+        </div>
       </div>
     </React.Fragment>
   );

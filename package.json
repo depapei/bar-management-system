@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.8",
+    "@mui/x-data-grid": "^8.27.1",
     "@prisma/adapter-mssql": "^7.4.0",
     "@prisma/client": "^7.4.0",
     "@tanstack/react-query": "^5.90.21",
