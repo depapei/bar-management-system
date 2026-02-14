@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+}
+
+model Customer {
+  CustomerID        Int                 @id(map: "PK__Customer__A4AE64B82F12CDDE") @default(autoincrement())
+  CustomerName      String              @db.VarChar(100)
+  Phone             String?             @db.VarChar(20)
+  Email             String?             @db.VarChar(100)
+  Address           String?             @db.Text
+  MemberStatus      String?             @default("Non-Member", map: "DF__Customer__Member__2B3F6F97") @db.VarChar(20)
+  Point             Int?                @default(0, map: "DF__Customer__Point__2C3393D0")
+  CreatedAt         DateTime?           @default(now(), map: "DF__Customer__Create__2D27B809") @db.DateTime
+  UpdatedAt         DateTime?           @default(now(), map: "DF__Customer__Update__2E1BDC42") @db.DateTime
+  CreatedBy         String?             @db.VarChar(50)
+  UpdatedBy         String?             @db.VarChar(50)
+  IsActive          Boolean?            @default(true, map: "DF__Customer__IsActi__2F10007B")
+  TransactionHeader TransactionHeader[]
+
+  @@index([Phone], map: "IX_Customer_Phone")
+}
+
+model MasterProduk {
+  ProductID         Int                 @id(map: "PK__MasterPr__B40CC6ED4372E389") @default(autoincrement())
+  ProductName       String              @db.VarChar(100)
+  ProductType       String              @db.VarChar(50)
+  Price             Decimal             @db.Decimal(10, 2)
+  Stock             Int?                @default(0, map: "DF__MasterPro__Stock__24927208")
+  Unit              String?             @default("pcs", map: "DF__MasterProd__Unit__25869641") @db.VarChar(20)
+  Description       String?             @db.Text
+  CreatedAt         DateTime?           @default(now(), map: "DF__MasterPro__Creat__267ABA7A") @db.DateTime
+  UpdatedAt         DateTime?           @default(now(), map: "DF__MasterPro__Updat__276EDEB3") @db.DateTime
+  CreatedBy         String?             @db.VarChar(50)
+  UpdatedBy         String?             @db.VarChar(50)
+  IsActive          Boolean?            @default(true, map: "DF__MasterPro__IsAct__286302EC")
+  TransactionDetail TransactionDetail[]
+
+  @@index([ProductName], map: "IX_MasterProduk_Name")
+}
+
+model TransactionDetail {
+  DetailID          Int               @id(map: "PK__Transact__135C314D9D9E2A33") @default(autoincrement())
+  TransactionID     Int
+  ProductID         Int
+  ProductName       String            @db.VarChar(100)
+  Quantity          Int
+  UnitPrice         Decimal           @db.Decimal(10, 2)
+  SubTotal          Decimal           @db.Decimal(10, 2)
+  MasterProduk      MasterProduk      @relation(fields: [ProductID], references: [ProductID], onUpdate: NoAction, map: "FK__Transacti__Produ__3B75D760")
+  TransactionHeader TransactionHeader @relation(fields: [TransactionID], references: [TransactionID], onUpdate: NoAction, map: "FK__Transacti__Trans__3A81B327")
+
+  @@index([TransactionID], map: "IX_TransactionDetail_TransID")
+}
+
+model TransactionHeader {
+  TransactionID     Int                 @id(map: "PK__Transact__55433A4B49EC64FB") @default(autoincrement())
+  TransactionCode   String              @unique(map: "UQ__Transact__D85E7026EA26F259") @db.VarChar(50)
+  CustomerID        Int?
+  TransactionDate   DateTime?           @default(now(), map: "DF__Transacti__Trans__32E0915F") @db.DateTime
+  TotalAmount       Decimal             @db.Decimal(10, 2)
+  Discount          Decimal?            @default(0, map: "DF__Transacti__Disco__33D4B598") @db.Decimal(10, 2)
+  FinalAmount       Decimal             @db.Decimal(10, 2)
+  PaymentMethod     String              @db.VarChar(50)
+  PaymentStatus     String?             @default("Paid", map: "DF__Transacti__Payme__34C8D9D1") @db.VarChar(20)
+  Notes             String?             @db.Text
+  CreatedAt         DateTime?           @default(now(), map: "DF__Transacti__Creat__35BCFE0A") @db.DateTime
+  UpdatedAt         DateTime?           @default(now(), map: "DF__Transacti__Updat__36B12243") @db.DateTime
+  CreatedBy         String?             @db.VarChar(50)
+  UpdatedBy         String?             @db.VarChar(50)
+  TransactionDetail TransactionDetail[]
+  Customer          Customer?           @relation(fields: [CustomerID], references: [CustomerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Transacti__Custo__37A5467C")
+
+  @@index([TransactionDate], map: "IX_TransactionHeader_Date")
+}
+
+model User {
+  UserID              Int       @id(map: "PK__User__1788CCAC7F6D3362") @default(autoincrement())
+  Username            String    @unique(map: "UQ__User__536C85E4E5EEBE7E") @db.VarChar(50)
+  PasswordHash        String    @db.VarChar(255)
+  PasswordSalt        String?   @db.VarChar(100)
+  FullName            String    @db.VarChar(100)
+  Email               String?   @unique(map: "UQ__User__A9D105348F220418") @db.VarChar(100)
+  Role                String    @default("Cashier", map: "DF__User__Role__403A8C7D") @db.VarChar(20)
+  IsActive            Boolean?  @default(true, map: "DF__User__IsActive__412EB0B6")
+  LastLogin           DateTime? @db.DateTime
+  FailedLoginAttempts Int?      @default(0, map: "DF__User__FailedLogi__4222D4EF")
+  LockoutUntil        DateTime? @db.DateTime
+  CreatedAt           DateTime? @default(now(), map: "DF__User__CreatedAt__4316F928") @db.DateTime
+  UpdatedAt           DateTime? @default(now(), map: "DF__User__UpdatedAt__440B1D61") @db.DateTime
+  CreatedBy           String?   @default("System", map: "DF__User__CreatedBy__44FF419A") @db.VarChar(50)
+  UpdatedBy           String?   @default("System", map: "DF__User__UpdatedBy__45F365D3") @db.VarChar(50)
+}

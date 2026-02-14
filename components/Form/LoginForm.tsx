@@ -1,6 +1,6 @@
 "use client";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { LoginValidate } from "@/lib/FormValidator/Login";
+import { LoginValidate } from "@/lib/FormValidator/Auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Alert, Button, Snackbar, TextField } from "@mui/material";
