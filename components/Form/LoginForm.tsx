@@ -57,6 +57,9 @@ export const LoginForm = () => {
             {error.status === 401
               ? "Username atau password salah!"
               : error.statusText}
+            {error.status === 404
+              ? "Username tidak ditermukan!"
+              : error.statusText}
           </Alert>
         </Snackbar>
       )}

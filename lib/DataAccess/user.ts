@@ -64,6 +64,10 @@ export const Login = async (data: ILoginForm) => {
       },
     });
 
+    if (!user) {
+      return 404;
+    }
+
     if (
       user?.PasswordHash &&
       (await bcrypt.compare(data.password, user?.PasswordHash))
@@ -71,7 +75,7 @@ export const Login = async (data: ILoginForm) => {
       return true;
     }
 
-    return false;
+    return 401;
   } catch (error) {
     return false;
   }

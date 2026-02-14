@@ -1,12 +1,6 @@
 import { Login } from "@/lib/DataAccess/user";
 import { deobfuscateId, obfuscateId } from "@/lib/helper/idObfuscator";
-import {
-  BadRequest,
-  Conflict,
-  Forbidden,
-  Success,
-  Unauthorized,
-} from "@/lib/helper/responses";
+import { NotFound, Success, Unauthorized } from "@/lib/helper/responses";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -24,12 +18,14 @@ export const POST = async (request: NextRequest) => {
       password: password.id,
     });
 
-    if (isLogin) {
+    if (isLogin === true) {
       return Success({
         token: obfuscateId("berhasil-coyyy!!!"),
       });
+    } else if (isLogin === 401) {
+      return Unauthorized("Username atau password masih salah!");
+    } else if (isLogin === 404) {
+      return NotFound("Username tidak ditermukan!");
     }
-
-    return Unauthorized("Username atau password masih salah!");
   }
 };
